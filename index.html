@@ -1,1 +1,58 @@
-terrain project test display ///
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>terrain</title>
+    <style>
+        /* ibm-plex-mono-regular - latin */
+        @font-face {
+            font-family: ibm;
+            font-style: normal;
+            font-weight: 400;
+            src: url('./assets/fonts/ibm-plex-mono-v12-latin-regular.woff');
+        }
+
+        * {
+            font-family: ibm;
+        }
+
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .bg {
+            /* The image used */
+            background-image: url("assets/bg.jpg");
+
+            /* Full height */
+            height: 100%;
+
+            /* Center and scale the image nicely */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .msg {
+            z-index: -1;
+            margin: auto;
+            padding: 25% 0;
+            width: 50%;
+            text-align: center;
+            color: aliceblue;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg">
+        <p class="msg"><i>rewilding nature through generative art</i></p>
+    </div>
+
+</body>
+
+</html>
