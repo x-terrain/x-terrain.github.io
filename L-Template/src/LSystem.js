@@ -17,7 +17,7 @@ class LSystem{
         this.name = options.name || 'l-system'
         this.iterations = options.iterations || 5;
         this.lineWidth = options.lineWidth || 4;
-        this.color = options.color || 0;
+        this.color = options.color || 238;
         this.gfx = gfx;
         this.screenPoints = [];
     }
