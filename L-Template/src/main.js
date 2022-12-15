@@ -13,7 +13,7 @@ the tezos blockchain through the FxHash API (GraphQL) and interpreting token met
 
 
 let lSys;
-let ruleSequence = ["+XX","-XX","+X-X","+X+X","-X-X"];
+let ruleSeq = ["+XX","-XX","+X-X","+X+X","-X-X"];
 let w, h;
 
 const fxRandArray = ( arr ) => {
@@ -23,7 +23,7 @@ const fxRandArray = ( arr ) => {
 window.$fxhashFeatures = {
   "Angle": fxRandArray([60,90,120]),
   "Axiom": "X",
-  "Rule": `F[${fxRandArray(ruleSequence)}]-[${fxRandArray(ruleSequence)}]`,
+  "Rule": `F[${fxRandArray(ruleSeq)}]-[${fxRandArray(ruleSeq)}]`,
   "Iterations": fxRandArray([2,3,4,5])
 }
 
