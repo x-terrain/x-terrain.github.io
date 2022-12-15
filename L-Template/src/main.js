@@ -13,61 +13,62 @@ the tezos blockchain through the FxHash API (GraphQL) and interpreting token met
 
 
 let lSys;
-
-let lOptions;
-let lAngles;
-let lRules;
-let lIterations;
-let lLen;
+let ruleSequence = ["+XX","-XX","+X-X","+X+X","-X-X"];
 let w, h;
 
 const fxRandArray = ( arr ) => {
   return arr[ Math.floor( fxrand() * arr.length ) ]
 }
 
+window.$fxhashFeatures = {
+  "Angle": fxRandArray([60,90,120]),
+  "Axiom": "X",
+  "Rule": `F[${fxRandArray(ruleSequence)}]-[${fxRandArray(ruleSequence)}]`,
+  "Iterations": fxRandArray([2,3,4,5])
+}
+
 function setup() {
   w = windowWidth;
   h = windowHeight;
   createCanvas(w,h);
-  
-  generate(w,h);
+  adjust(w,h);
 }
+
 function draw() {
   background(30);
-  lSys.display(align().x,align().y+100);
+  lSys.display(align(w,h).x,align(w,h).y);
   noLoop();
 }
 
-function generate(w,h) {
-  lAngles = [60,90,120];
-  let rSeq = ["+XX","-XX","+X-X","+X+X","-X-X"];
-  lRules = [
-    `F[${fxRandArray(rSeq)}]-[${fxRandArray(rSeq)}]`
-  ];
-  lIterations = fxRandArray([2,3,4,5]);
+const align = (w,h) => {
+    let screenPoints_x = [];
+    let screenPoints_y = [];
+  
+    for(let i=0; i<lSys.screenPoints.length; i++) {
+        screenPoints_x.push(lSys.screenPoints[i].x);
+        screenPoints_y.push(lSys.screenPoints[i].y);
+    }
 
-  if(lIterations==2) {
-    lLen = height/6;
-  } else if(lIterations==3) {
-    lLen = height/12;
-  } else if(lIterations==4) {
-    lLen = height/20;
-  } else {
-    lLen = height/30;
-  }
+    let xmin = min(screenPoints_x); 
+    let xmax = max(screenPoints_x);
+    let ymin = min(screenPoints_y);
+    let ymax = max(screenPoints_y);
+    let offset = createVector(w/2 - xmax/2, h/2 - ymax/2);
+    return offset;
+}
 
-  lOptions = {
-        angle: fxRandArray(lAngles),
-        axiom: 'X',
+const adjust = (w,h) => {
+  let options = {
+        angle: $fxhashFeatures.Angle,
+        axiom: $fxhashFeatures.Axiom,
         rules: {
-            'X': fxRandArray(lRules)
+            [$fxhashFeatures.Axiom]: $fxhashFeatures.Rule
         },
-        iterations: lIterations,
-        length: lLen,
-        lineWidth: w/300
+        iterations: $fxhashFeatures.Iterations,
+        length: h / ($fxhashFeatures.Iterations * 3),
+        lineWidth: h / 300
   }
-  lSysRule = `rule: ${Object.keys(lOptions.rules)[0]} = ${Object.values(lOptions.rules)[0]}`;
-  lSys = new LSystem(lOptions);
+  lSys = new LSystem( options );
   lSys.init(w,h);
 }
 
@@ -75,5 +76,6 @@ function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
   w = windowWidth;
   h = windowHeight;
-  setup();
+  adjust(w,h);
+  loop();
 }
