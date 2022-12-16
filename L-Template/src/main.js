@@ -27,10 +27,14 @@ window.$fxhashFeatures = {
   "Rule": `F[${fxRandArray(ruleSeq)}]-[${fxRandArray(ruleSeq)}]`,
   "Iterations": fxRandArray([2,3,4,5,6])
 }
+function preload() {
+  fnt = loadFont("./assets/IBMPlexMono-BoldItalic.ttf");
+}
 
 function setup() {
   w = windowWidth;
   h = windowHeight;
+  
   createCanvas(w,h);
   adjust(w,h);
 }
@@ -38,6 +42,13 @@ function setup() {
 function draw() {
   background(20);
   lSys.display(align(w,h).x,align(w,h).y);
+  textFont(fnt);
+  textSize(14);
+  fill(228);
+  text(`Axiom: ${window.$fxhashFeatures.Axiom}
+Rule: ${window.$fxhashFeatures.Rule}
+Iterations: ${window.$fxhashFeatures.Iterations}
+Angle: ${window.$fxhashFeatures.Angle}`, w/20, h/20);
   noLoop();
 }
 
