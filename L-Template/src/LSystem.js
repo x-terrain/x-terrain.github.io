@@ -8,7 +8,7 @@ LSystemConstants.STOCHASTIC_PTN = new RegExp("([\.0-9]+)([a-zA-Z])")
 LSystemConstants.VALID_VAR_PTN = new RegExp("[a-zA-Z]")
 
 class LSystem{
-    constructor(options, gfx) {
+    constructor(options) {
         this.setAngle(options.angle);
         this.setAxiom(options.axiom);
         this.rules = {};
@@ -17,8 +17,7 @@ class LSystem{
         this.name = options.name || 'l-system'
         this.iterations = options.iterations || 5;
         this.lineWidth = options.lineWidth || 4;
-        this.color = options.color || 238;
-        this.gfx = gfx;
+        this.color = options.color || 228;
         this.screenPoints = [];
     }
 
