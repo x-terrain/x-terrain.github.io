@@ -34,10 +34,15 @@ function draw() {
     blendMode(BLEND);
     background(20);
     image(bg, 0, 0, width, height);
-    fill(255);
+    fill(0,120);
+    rect(0,0,width,height);
+    
     textFont(font);
     textSize(14);
-    text("reading gentoken 22568", 50, 50);
+    fill(255);
+    text("rewilding nature through generative art", 50, 50);
+    fill(255,100);
+    text("fetching generative token 22568 from fx-hash...", 50, 80);
     blendMode(SCREEN);
 
     let divider = 1.5;
