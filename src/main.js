@@ -1,1 +1,65 @@
-let lSys,xmin,xmax,ymin,ymax,offset,mFont,mTitleFont,lSysRule,lOptions,lAngles,lRules,lIterations,lLen,debugView=!1,colorBgBox=[78,88,88],colorShape=[228,238,238],colorAuTrig=[0,0,0],segments=[],movers=[];function preload(){mFont=loadFont("./assets/IBMPlexMono-Regular.ttf"),mTitleFont=loadFont("./assets/IBMPlexMono-BoldItalic.ttf")}function setup(){let e=windowWidth,t=windowHeight;createCanvas(e,t),lAngles=[60,90,120];let o=["+XX","-XX","+X-X","+X+X","-X-X"];lRules=[`F[${random(o)}]-[${random(o)}]`],lIterations=random([4,5,6]),lLen=2==lIterations?height/6:3==lIterations?height/12:4==lIterations?height/20:height/30,lOptions={angle:random(lAngles),axiom:"X",rules:{X:random(lRules)},iterations:lIterations,length:lLen},lSysRule=`rule: ${Object.keys(lOptions.rules)[0]} = ${Object.values(lOptions.rules)[0]}`,lSys=new LSystem(lOptions),lSys.init(e,t);let l=[],s=[];for(let e=0;e<lSys.screenPoints.length;e++)l.push(lSys.screenPoints[e].x),s.push(lSys.screenPoints[e].y);xmin=min(l),xmax=max(l),ymin=min(s),ymax=max(s),offset=createVector(width/2-xmax/2,height/2.5-ymax/2);for(let e=0;e<lSys.screenPoints.length;e++)if(e>0){let t=lSys.screenPoints[e],o=lSys.screenPoints[e-1];if(e%2==1){let e=atan2(o.y-t.y,o.x-t.x);segments.push([t.x,t.y,o.x,o.y,e,0,0])}}for(let e=0;e<3;e++)movers.push([map(e,0,3,0,width),height/2]);playSequence(),playBase()}function draw(){background(21,56,45),noStroke(),fill(colorBgBox);let e=[];for(let t=0;t<lSys.screenPoints.length-1;t++)e.push([floor(lSys.screenPoints[t].x+offset.x),floor(lSys.screenPoints[t].y+offset.y)]);for(let e=0;e<movers.length;e++)movers[e][1]=sin(millis()/8e3)*height/4+height/2+height/4;for(let t of movers)e.push(t);voronoiClearSites(),voronoiSites(e),voronoi(width,height,!1),voronoiDraw(0,0,!1,!1,0,[colorShape[0],colorShape[1],colorShape[2],100]);for(let e=0;e<segments.length;e++)stroke(colorShape),strokeWeight(lSys.lineWidth),strokeCap(PROJECT);for(let e=0;e<segments.length;e++)fill(colorAuTrig[0],colorAuTrig[1],colorAuTrig[2],segments[e][5]),noStroke(),fill(colorShape[0],colorShape[1],colorShape[2],segments[e][6]),segments[e][6]>0&&(segments[e][6]-=10);if(debugView){noStroke(),fill(0,100),rect(xmin+offset.x,ymin+offset.y,xmax,ymax);for(let e=0;e<lSys.screenPoints.length;e++)fill(255,0,0),noStroke(),ellipse(lSys.screenPoints[e].x+offset.x,lSys.screenPoints[e].y+offset.y,5,5);stroke(0,200,200),strokeWeight(1),line(0,ymin+offset.y,width,ymin+offset.y),line(0,ymax+offset.y,width,ymax+offset.y),line(xmin+offset.x,0,xmin+offset.x,height),line(xmax+offset.x,0,xmax+offset.x,height)}push(),translate(width/2,height-height/8),strokeWeight(4*lSys.lineWidth),stroke(colorShape),noFill(),rect(-height/30,0,-height/30,height/30),noStroke(),fill(colorShape),textAlign(LEFT),textFont(mFont),textSize(12),text(`axiom: ${lOptions.axiom}`,0,0),text(lSysRule,0,14),text(`angle: ${lOptions.angle}`,0,28),text(`iterations: ${lOptions.iterations}`,0,42),pop(),textFont(mTitleFont),textSize(18),fill(colorShape),textAlign(CENTER),text("rewilding nature through generative art",width/2,height/3)}function mousePressed(){initAudio()}function windowResized(){resizeCanvas(windowWidth,windowHeight)}
+fetch('https://api.fxhash.xyz/graphql', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+    },
+    body: JSON.stringify({
+        query: `{ 
+      generativeToken(id:22568) {
+        entireCollection { id, features, owner{ name }, thumbnailUri  }
+        balance
+        pricingFixed { price }
+      }
+    }`,
+    })
+}).then(r => r.json()).then(data => initCollection(data));
+
+let collectionData = [];
+let thumbs = [];
+let font;
+let bg;
+let tokenList = [];
+
+function preload() {
+    font = loadFont("../assets/IBMPlexMono-BoldItalic.ttf");
+    bg = loadImage("../assets/bg.jpg");
+}
+function setup() {
+    createCanvas(windowWidth, windowHeight);
+    for (let i = 0; i < 30; i++) tokenList.push(floor(random(100)));
+}
+
+function draw() {
+    blendMode(BLEND);
+    background(20);
+    image(bg, 0, 0, width, height);
+    fill(255);
+    textFont(font);
+    textSize(14);
+    text("reading gentoken 22568", 50, 50);
+    blendMode(SCREEN);
+
+    let divider = 1.5;
+    for (let i = 0; i < tokenList.length; i++) {
+        let index = tokenList[i];
+        if (thumbs[index] !== undefined) {
+            let s = thumbs[index].width / divider;
+            let pos = createVector(i * s, height / 2 - s / 2);
+            image(thumbs[index], pos.x, pos.y, s * 0.9, s * 0.9);
+            fill(255);
+            textSize(9);
+            text(`owner: ${collectionData[index].owner.name}`, pos.x, pos.y + s * 1.05)
+            text(`rule: ${collectionData[index].features[2].value}`, pos.x, pos.y + s * 1.1);
+        }
+    }
+}
+
+function initCollection(data) {
+    collectionData = data.data.generativeToken.entireCollection;
+    for (let i = 0; i < collectionData.length; i++) {
+        let img = loadImage("https://ipfs.io/ipfs/" + collectionData[i].thumbnailUri.split("//")[1]);
+        thumbs.push(img);
+    }
+}
+
