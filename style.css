@@ -1,11 +1,28 @@
 html, body {
   margin: 0;
   padding: 0;
-  background: grey;
+  background: rgb(212, 214, 212);
   overflow: hidden;
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+#layout {
+  background: radial-gradient(75.29% 75.29% at 64.96% 24.36%, #FACBD2 0.52%, #FCCCBE 10.42%, #F7D6B1 38.02%, #C3ECB4 75%, #8EDEBB 100%);
+  -webkit-filter: blur(8vmin);
+  filter: blur(8vmin);
+  border-radius: 100%;
+  position:fixed;
+  margin:0;
+  padding:0;
+  width: 100%;
+  height:100%;
+  z-index:0;
+}
+#content {
+  margin:200px;
+  z-index:1;
+}
+
 canvas {
   display: block;
 }

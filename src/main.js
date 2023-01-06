@@ -23,7 +23,7 @@ let tokenList = [];
 
 function preload() {
     font = loadFont("../assets/IBMPlexMono-BoldItalic.ttf");
-    bg = loadImage("../assets/bg.jpg");
+    bg = loadImage("../assets/bg.png");
 }
 function setup() {
     createCanvas(windowWidth, windowHeight);
@@ -31,19 +31,15 @@ function setup() {
 }
 
 function draw() {
-    blendMode(BLEND);
-    background(20);
+    //blendMode(BLEND);
     image(bg, 0, 0, width, height);
-    fill(0,120);
-    rect(0,0,width,height);
-    
     textFont(font);
     textSize(14);
-    fill(255);
+    fill(0);
     text("rewilding nature through generative art", 50, 50);
-    fill(255,100);
+    fill(0);
     text("fetching generative token 22568 from fx-hash...", 50, 80);
-    blendMode(SCREEN);
+    //blendMode(SCREEN);
 
     let divider = 1.5;
     for (let i = 0; i < tokenList.length; i++) {
@@ -52,7 +48,7 @@ function draw() {
             let s = thumbs[index].width / divider;
             let pos = createVector(i * s, height / 2 - s / 2);
             image(thumbs[index], pos.x, pos.y, s * 0.9, s * 0.9);
-            fill(255);
+            fill(0);
             textSize(9);
             text(`owner: ${collectionData[index].owner.name}`, pos.x, pos.y + s * 1.05)
             text(`rule: ${collectionData[index].features[2].value}`, pos.x, pos.y + s * 1.1);
