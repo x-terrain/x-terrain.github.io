@@ -1,5 +1,22 @@
 html, body {
   background: rgb(212, 214, 212);
+  
+}
+
+table {
+  width: 80%;
+}
+
+th {
+  text-align: left;
+  font-size:100%;
+  font-weight: 400; 
+  color:black;
+  font-family: 'IBM Plex Sans', sans-serif;
+}
+
+#seed {
+  font-size:400%;
 }
 #layout {
   background: radial-gradient(75.29% 75.29% at 64.96% 24.36%, #FACBD2 0.52%, #FCCCBE 10.42%, #F7D6B1 38.02%, #C3ECB4 75%, #8EDEBB 100%);
@@ -25,6 +42,17 @@ font-style: italic;
   position:absolute;
   font-family: 'IBM Plex Sans', sans-serif;
   
+}
+
+#logo {
+  margin-left:auto;
+  right:0;
+  width:10%;
+  margin-top:2%;
+  color:black;
+  background-color: aquamarine;
+  z-index:2;
+  position:absolute;
 }
 #content {
   margin-left:15%;

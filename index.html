@@ -15,7 +15,7 @@
 <body>
   <!--<script src="src/main.js"></script> -->
   <div id="layout"></div>
-  <div id="titletext">TERRAIN</div>
+  <div id="titletext">TERRAIN<div id="blnk" style="display: inline">_</div></div>
   <div id="content">
     <p>
       Terrain is a collection of generative artworks that helps adaptation to climate change. Using automated donations
@@ -37,19 +37,40 @@
       Clean Water Fund, RE-volv, Ocean Alliance Inc,Sustainability Matters, Flying Cloud Institute, Pacific Rim Institute for Environmental Stewardship, Amazon
       Conservation Association, National Parks Conservation Association, Earth Day Network Inc, Greenwave Organization Corp, Wild Tomorrow Fund, The Life You Can Save
     </p>
-    <p>
-      This project is part of <a href="https://www.refractionfestival.com/editorial/meet-the-refraction-season-02-grant-recipients">RefractionDAO’s Creative Grants Season 02</a>. Tags: audio, game, board, abstract, climate, donation, minimal, l-system. </p>
+    
+    <br><br>
+    
+      <table>
+        <tr>
+          <th><div id="seed">🌱</div></th><th><a href="https://www.refractionfestival.com/principles"><img src="assets/r-logo.png" width="80px"height="80px"/></a>
+          </th>
+          <th>
+            <p>
+              This project is part of <a href="https://www.refractionfestival.com/editorial/meet-the-refraction-season-02-grant-recipients">RefractionDAO’s Creative Grants Season 02</a>. 
+              Tags: audio, game, board, abstract, climate, donation, minimal, l-system. 
+              Proposed drop date on fx-hash: 2023 early Feb.
+            </p>
+            
+          </th>
+        </tr>
+      </table>
       
-    <p>
-      Proposed drop date on fx-hash: 2023 early Feb. Editions: 1000
-    </p>
+      
     <br>
     <br>
-    <a href="https://www.refractionfestival.com/principles"><img src="assets/r-logo.png" width="5%"/></a>
+    
     <br><br><br><br><br><br><br><br>
     .
 
   </div>
+
+  <script>
+    let blink_speed = 500; // every 1000 == 1 second, adjust to suit
+    let t = setInterval(function () {
+      let ele = document.getElementById('blnk');
+      ele.style.visibility = (ele.style.visibility == 'hidden' ? '' : 'hidden');
+    }, blink_speed);
+  </script>
 </body>
 
 </html>
