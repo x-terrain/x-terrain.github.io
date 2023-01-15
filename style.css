@@ -17,6 +17,7 @@ html, body {
   margin-left:15%;
   margin-top:2%;
   color:black;
+  background-color: aquamarine;
   z-index:1;
   font-size: 200%;
   position:fixed;
