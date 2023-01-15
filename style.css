@@ -1,14 +1,8 @@
 html, body {
-  margin: 0;
-  padding: 0;
   background: rgb(212, 214, 212);
-  overflow: hidden;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
 }
 #layout {
   background: radial-gradient(75.29% 75.29% at 64.96% 24.36%, #FACBD2 0.52%, #FCCCBE 10.42%, #F7D6B1 38.02%, #C3ECB4 75%, #8EDEBB 100%);
-  -webkit-filter: blur(8vmin);
   filter: blur(8vmin);
   border-radius: 100%;
   position:fixed;
@@ -16,13 +10,27 @@ html, body {
   padding:0;
   width: 100%;
   height:100%;
-  z-index:0;
+  color:black;
+  z-index:-100;
+}
+#titletext {
+  margin-left:15%;
+  margin-top:2%;
+  color:black;
+  z-index:1;
+  font-size: 200%;
+  position:fixed;
+  font-family: 'IBM Plex Sans', sans-serif;
+  
 }
 #content {
-  margin:200px;
+  margin-left:15%;
+  margin-right:15%;
+  margin-top:5%;
+  font-size:100%;
+  color:black;
   z-index:1;
+  position:absolute;
+  font-family: 'IBM Plex Sans', sans-serif;
 }
 
-canvas {
-  display: block;
-}
