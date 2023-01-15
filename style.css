@@ -20,7 +20,7 @@ html, body {
   background-color: aquamarine;
   z-index:1;
   font-size: 200%;
-  position:fixed;
+  position:absolute;
   font-family: 'IBM Plex Sans', sans-serif;
   
 }
