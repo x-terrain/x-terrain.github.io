@@ -20,6 +20,8 @@ html, body {
   background-color: aquamarine;
   z-index:1;
   font-size: 200%;
+  font-weight: 900; 
+font-style: italic;
   position:absolute;
   font-family: 'IBM Plex Sans', sans-serif;
   
@@ -29,6 +31,8 @@ html, body {
   margin-right:15%;
   margin-top:5%;
   font-size:100%;
+  font-weight: 900; 
+font-style: italic; 
   color:black;
   z-index:1;
   position:absolute;
