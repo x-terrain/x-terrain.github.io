@@ -18,33 +18,42 @@ fetch('https://api.fxhash.xyz/graphql', {
 let collectionData = [];
 let thumbs = [];
 let font;
-let img;
-let clogo, rlogo;
-let bg;
 let tokenList = [];
-
 let texts;
+let logo;
+let leafPos;
+let leafSize;
 
 function preload() {
     font = loadFont("../assets/IBMPlexMono-BoldItalic.ttf");
-    bg = loadImage("../assets/bg.png");
-    texts = loadJSON("../assets/texts.json");
-    img = loadImage("../assets/terrain-view.png");
-    clogo = loadImage("../assets/c-logo.png");
-    rlogo = loadImage("../assets/r-logo.png");
+    logo = loadImage("../assets/terrain-logo-blk.png");
 }
 function setup() {
-    createCanvas(windowWidth, windowHeight);
+    let canvasDiv = document.getElementById('myCanvas');
+    let w = canvasDiv.offsetWidth;
+    let sketchCanvas = createCanvas(w,w);
+    sketchCanvas.parent("myCanvas");
+    leafPos = createVector(random(width/4,width/2+width/4),random(height/4,height/2));
+    leafSize = random(100,300);
+    
+    /*
     for (let i = 0; i < 30; i++) tokenList.push(floor(random(100)));
-
     let a = createA('https://www.cryptoforcharity.io/cause-funds/environmental-conservation', 'Environmental Conservation Case Funds');
     a.position(width/20 + width/3, height-height/20);
-
     let b = createA('https://www.refractionfestival.com/editorial/meet-the-refraction-season-02-grant-recipients', 'Refraction DAO Creative Grants');
     b.position(width/20 + width/3, height-height/15);
+    */
 }
 
 function draw() {
+    clear();
+    textSize(leafSize);
+    text("🌱",leafPos.x,leafPos.y);
+    imageMode(CENTER);
+    let ratio = width/logo.width/4;
+    image(logo,width/2,height/4,logo.width*ratio,logo.height*ratio);
+    
+    /*
     blendMode(BLEND);
     image(bg, 0, 0, width, height);
     image(img,width/40,height/40,width/2.9,width/2.9);
@@ -76,13 +85,15 @@ function draw() {
         }
     }
     }
+    */
 }
 
 function initCollection(data) {
     collectionData = data.data.generativeToken.entireCollection;
+    console.log(collectionData);
     for (let i = 0; i < collectionData.length; i++) {
-        let img = loadImage("https://ipfs.io/ipfs/" + collectionData[i].thumbnailUri.split("//")[1]);
-        thumbs.push(img);
+        //let img = loadImage("https://ipfs.io/ipfs/" + collectionData[i].thumbnailUri.split("//")[1]);
+        //thumbs.push(img);
     }
 }
 
