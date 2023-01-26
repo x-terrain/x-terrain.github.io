@@ -26,7 +26,7 @@ let leafSize;
 
 function preload() {
     font = loadFont("../assets/IBMPlexMono-BoldItalic.ttf");
-    logo = loadImage("../assets/terrain-logo-blk.png");
+    logo = loadImage("../assets/terrain-logo-blk-small.png");
 }
 function setup() {
     let canvasDiv = document.getElementById('myCanvas');
