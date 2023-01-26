@@ -33,8 +33,8 @@ function setup() {
     let w = canvasDiv.offsetWidth;
     let sketchCanvas = createCanvas(w,w);
     sketchCanvas.parent("myCanvas");
-    leafPos = createVector(random(width/4,width/2+width/4),random(height/4,height/2));
-    leafSize = random(100,300);
+    leafPos = createVector(random(width/2-width/10,width/2+width/10),random(height/8,height/2));
+    leafSize = random(w/10,w/4);
     
     /*
     for (let i = 0; i < 30; i++) tokenList.push(floor(random(100)));
