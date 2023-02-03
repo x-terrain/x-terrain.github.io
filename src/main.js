@@ -1,21 +1,6 @@
 // L-Template tokenid: 22568
 
-fetch('https://api.fxhash.xyz/graphql', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-    },
-    body: JSON.stringify({
-        query: `{ 
-      generativeToken(id:16060) {
-        entireCollection { id, features, owner{ name }, thumbnailUri  }
-        balance
-        pricingFixed { price }
-      }
-    }`,
-    })
-}).then(r => r.json()).then(data => initCollection(data));
+
 
 let collectionData = [];
 let thumbs = [];
@@ -37,6 +22,23 @@ function setup() {
     sketchCanvas.parent("myCanvas");
     leafPos = createVector(random(width/2-width/10,width/2+width/10),random(height/8,height/2));
     leafSize = random(w/10,w/4);
+
+    fetch('https://api.fxhash.xyz/graphql', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+    },
+    body: JSON.stringify({
+        query: `{ 
+      generativeToken(id:16060) {
+        entireCollection { id, features, owner{ name }, thumbnailUri  }
+        balance
+        pricingFixed { price }
+      }
+    }`,
+    })
+}).then(r => r.json()).then(data => initCollection(data));
     
     /*
     for (let i = 0; i < 30; i++) tokenList.push(floor(random(100)));
