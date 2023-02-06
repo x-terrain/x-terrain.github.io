@@ -4,6 +4,11 @@ let tokenList = [];
 
 let tokenBalance;
 let donatedBalance;
+let totalAmount = 1000;
+let price = 8;
+let donationSplit = 0.5;
+let marketFee = 0.975;
+
 let updalpha = 255;
 
 let bfont, lfont;
@@ -11,6 +16,10 @@ let logo;
 let rndChar1 = "_";
 let rndChar2 = "_";
 let rndChar3 = "_";
+let rndToken1 = 0;
+let rndToken2 = 0;
+let rndToken3 = 0;
+
 const chars = `!@#$%^&*()_+{}:|?><';[].,/`
 
 function preload() {
@@ -21,8 +30,13 @@ function preload() {
 function setup() {
     let canvasDiv = document.getElementById('myCanvas');
     let w = canvasDiv.offsetWidth;
-    let sketchCanvas = createCanvas(w, w / 2);
-    sketchCanvas.parent("myCanvas");
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        let sketchCanvas = createCanvas(w, w/2);
+        sketchCanvas.parent("myCanvas");
+    } else {
+        let sketchCanvas = createCanvas(w, 500);
+        sketchCanvas.parent("myCanvas");
+    }
 
     fetchToken();
 }
@@ -89,49 +103,78 @@ processing ..${rndChar1}${rndChar2}${rndChar1}${rndChar3}
         textFont(lfont);
         textSize(16);
         text(`
-Minted tokens: ${1000 - tokenBalance} editions
+processing ..${rndChar1}${rndChar2}${rndChar1}${rndChar3}..${rndChar1}.${rndChar1}${rndChar3}${rndChar3}...${rndChar3}
+Click here to update data
+Minted tokens: ${totalAmount - tokenBalance} editions
 Remaining tokens: ${tokenBalance} editions
 Donated amount: ${donatedBalance} xtz
-Click to update data
-processing ..${rndChar1}${rndChar2}${rndChar1}${rndChar3}
 `, 30, 60);
 
 
         image(logo, width - logo.width / 10, 0, logo.width / 10, logo.height / 10);
-    }
+    let topmar = 220;
 
-    // display all token thumbs
-    /*
-    for (let i = 0; i < tokenList.length; i++) {
-        let index = tokenList[i];
-        if (thumbs[index] !== undefined) {
-            let s = thumbs[index].width / divider;
-            let pos = createVector(i * s + width/40, width/2.9 + s / 2);
-            if(pos.x<width/3) {
-                image(thumbs[index], pos.x, pos.y, s * 0.9, s * 0.9);
-                fill(0);
-                textSize(9);
-                text(`owner: ${collectionData[index].owner.name}`, pos.x, pos.y + s * 1.05)
-                text(`rule: ${collectionData[index].features[2].value}`, pos.x, pos.y + s * 1.1);
+stroke(0);
+line(0,topmar-30,width,topmar - 30);
+noStroke();
+
+if(collectionData.length>0) {
+        if(thumbs.length>1) {
+            let img = thumbs[rndToken1];
+            if (img !== undefined) {
+                fill(255,200);
+                rect(30-10,topmar-10,img.width/2+20,img.height/2+20);
+                image(img,30,topmar,img.width/2,img.height/2);
             }
-        }
+            // display one token thumb
+            fill(0);
+            text(`
+Random artwork 
+id: #${collectionData[rndToken1].id}
+Collector/Donor: 
+${collectionData[rndToken1].owner.name}
+`, 30, topmar+img.height/2+20);
+            
+            let img2 = thumbs[rndToken2];
+            if (img2 !== undefined) {
+                fill(255,200);
+                rect(width/3+30-10,topmar-10,img2.width/2+20,img2.height/2+20);
+                image(img2,width/3+30,topmar,img2.width/2,img2.height/2);
+            }
+            // display one token thumb
+            fill(0);
+            text(`
+Random artwork 
+id: #${collectionData[rndToken2].id}
+Collector/Donor: 
+${collectionData[rndToken2].owner.name}
+`, width/3+30, topmar+img.height/2+20);
+            
+            let img3 = thumbs[rndToken3];
+            if (img3 !== undefined) {
+                fill(255,200);
+                rect(width-width/3+30-10,topmar-10,img3.width/2+20,img3.height/2+20);
+                image(img3,width-width/3+30,topmar,img3.width/2,img3.height/2);
+            }
+            // display one token thumb
+            fill(0);
+            text(`
+Random artwork 
+id: #${collectionData[rndToken3].id}
+Collector/Donor: 
+${collectionData[rndToken3].owner.name}
+`, width-width/3+30, topmar+img.height/2+20);
+            }
+    } else {
+        fill(0);
+        text(`Random artwork previews will appear here upon minting`, 30, topmar+50);
     }
-    */
-
-    // display one token thumb
-
-    /*
-    if(thumbs.length>1) {
-        let img = thumbs[0];
-        if (img !== undefined) {
-            image(img,0,0,img.width/4,img.height/4);
-        }
     }
-    */
-
 }
 
 function mousePressed() {
+    thumbs = [];
+    updalpha = 255;
     fetchToken();
 }
 
@@ -147,6 +190,9 @@ function fetchToken() {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
         },
+        // terrain: 24638
+        // k3rnel: 19820
+        // dotwork: 16060
         body: JSON.stringify({
             query: `{ 
                 generativeToken(id:24638) {
@@ -161,20 +207,17 @@ function fetchToken() {
 
 function initCollection(data) {
     collectionData = data.data.generativeToken.entireCollection;
-    thumbs = [];
     for (let i = 0; i < collectionData.length; i++) {
         let img = loadImage("https://ipfs.io/ipfs/" + collectionData[i].thumbnailUri.split("//")[1]);
         thumbs.push(img);
     }
 
-    tokenBalance = data.data.generativeToken.balance;
-    let totalAmount = 1000;
-    let price = 8;
-    let donationSplit = 0.5;
-    let marketFee = 0.975;
-    donatedBalance = (totalAmount - tokenBalance) * price * donationSplit * marketFee;
+    rndToken1 = floor(random(thumbs.length-1));
+    rndToken2 = floor(random(thumbs.length-1));
+    rndToken3 = floor(random(thumbs.length-1));
 
-    updalpha = 255;
+    tokenBalance = data.data.generativeToken.balance;
+    donatedBalance = (totalAmount - tokenBalance) * price * donationSplit * marketFee;
     /* 
         totalAmount = 1000
         price = 5
