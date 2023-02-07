@@ -204,6 +204,10 @@ class Token {
         this.lSys.init(width/10,width/10);
     }
     showPreview() {
+        noFill();
+        stroke(255,100);
+        line(this.x,this.y-this.h*1.2,this.x+this.w,this.y-this.h*1.2+this.h);
+        rect(this.x, this.y -this.h*1.2, this.w, this.h);
         if (this.img !== undefined) {
             image(this.img, this.x, this.y -this.h*1.2, this.w, this.h);
         }
