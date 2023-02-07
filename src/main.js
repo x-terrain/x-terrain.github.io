@@ -217,7 +217,7 @@ class Token {
     showData(x,y) {
         fill(255);
         textFont(lfont);
-        textSize(12);
+        textSize(width/130);
         text(`${this.options.rules.X}
 #${this.id}
 owned by: 
