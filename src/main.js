@@ -1,6 +1,5 @@
 let collectionData = [];
-let thumbs = [];
-let tokenList = [];
+let tokens = [];
 
 let tokenBalance;
 let donatedBalance;
@@ -10,78 +9,62 @@ let donationSplit = 0.5;
 let marketFee = 0.975;
 
 let updalpha = 255;
-
 let bfont, lfont;
 let logo;
-let rndChar1 = "_";
-let rndChar2 = "_";
-let rndChar3 = "_";
-let rndToken1 = 0;
-let rndToken2 = 0;
-let rndToken3 = 0;
 
 const chars = `!@#$%^&*()_+{}:|?><';[].,/`
+let randseq;
 
 function preload() {
     bfont = loadFont("../assets/IBMPlexMono-BoldItalic.ttf");
     lfont = loadFont("../assets/IBMPlexMono-LightItalic.ttf");
-    logo = loadImage("../assets/terrain-logo-blk-small.png");
+    logo = loadImage("../assets/terrain-logo-small.png");
 }
 function setup() {
-    let canvasDiv = document.getElementById('myCanvas');
-    let w = canvasDiv.offsetWidth;
-    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-        let sketchCanvas = createCanvas(w, w/2);
-        sketchCanvas.parent("myCanvas");
-    } else {
-        let sketchCanvas = createCanvas(w, 500);
-        sketchCanvas.parent("myCanvas");
-    }
-
+    createCanvas(windowWidth, windowHeight);
     fetchToken();
+
+    randseq = "processing";
+    
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        let a = createA('https://www.fxhash.xyz/generative/24638', 'mint new edition on fx-hash');
+        a.position(30, height/3);
+        for(let i=0; i< 15; i++) randseq+="."; 
+    } else {
+        for(let i=0; i< 500; i++) randseq+=".";
+    }
 }
 
 function draw() {
     clear();
-    
-    stroke(0);
-    line(0,1,width,1);
-        
+    for(let i=0; i<randseq.length; i++) {
+        if(i== int(random(randseq.length)) && i>10 && (frameCount%4 == 0 || frameCount%6 == 0)) {
+            randseq = setCharAt(randseq,i,chars[ int( random( chars.length-1))] );
+        }    
+    }
+
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-        noStroke();
-        textSize(10);
-
-        fill(0);
+        fill(255);
         textFont(bfont);
-        text(`Live token status:`, 10, 10);
-
-        
-        fill(0);
-
-        if (frameCount % 30 == 0 || frameCount % int(random(10, 200)) == 0) {
-            rndChar1 = chars[int(random(chars.length - 1))];
-        }
-        if (frameCount % 120 == 0 || frameCount % int(random(30, 50)) == 0) {
-            rndChar2 = chars[int(random(chars.length - 1))];
-        }
-        if (frameCount % 2 == 0 || frameCount % int(random(3, 5)) == 0) {
-            rndChar3 = chars[int(random(chars.length - 1))];
-        }
+        text(`Terrain Dashboard - 
+best viewed on a desktop`, 30, 30);
         textFont(lfont);
-        textSize(10);
+        textSize(16);
         text(`
-Minted tokens: ${1000 - tokenBalance} 
-Remaining tokens: ${tokenBalance} 
+Minted tokens: ${totalAmount - tokenBalance} editions
+Remaining tokens: ${tokenBalance} editions
 Donated amount: ${donatedBalance} xtz
-processing ..${rndChar1}${rndChar2}${rndChar1}${rndChar3}
-`, 10, 40);
-
-    } else {
+${randseq}
+`, 30, 60);
+image(logo, 30, height/3+20, logo.width / 10, logo.height / 10);
+} else {
         noStroke();
         textSize(20);
 
-
-        fill(0);
+        stroke(255,100);
+        line(0, height/4, width, height/4);
+        noStroke();        
+        fill(255);
         textFont(bfont);
         text(`Live token status:`, 30, 30);
 
@@ -89,110 +72,78 @@ processing ..${rndChar1}${rndChar2}${rndChar1}${rndChar3}
         text("updating token data from fx-hash...", 30, 60);
         if (updalpha > 0) updalpha--;
 
-        fill(0);
-
-        if (frameCount % 30 == 0 || frameCount % int(random(10, 200)) == 0) {
-            rndChar1 = chars[int(random(chars.length - 1))];
-        }
-        if (frameCount % 120 == 0 || frameCount % int(random(30, 50)) == 0) {
-            rndChar2 = chars[int(random(chars.length - 1))];
-        }
-        if (frameCount % 2 == 0 || frameCount % int(random(3, 5)) == 0) {
-            rndChar3 = chars[int(random(chars.length - 1))];
-        }
+        fill(255);
         textFont(lfont);
         textSize(16);
         text(`
-processing ..${rndChar1}${rndChar2}${rndChar1}${rndChar3}..${rndChar1}.${rndChar1}${rndChar3}${rndChar3}...${rndChar3}
-Click here to update data
 Minted tokens: ${totalAmount - tokenBalance} editions
 Remaining tokens: ${tokenBalance} editions
 Donated amount: ${donatedBalance} xtz
+${randseq}
+Click to update data
 `, 30, 60);
 
 
-        image(logo, width - logo.width / 10, 0, logo.width / 10, logo.height / 10);
-    let topmar = 220;
+        image(logo, width - logo.width / 8, 20, logo.width / 10, logo.height / 10);
+        let margin = height/2;
 
-stroke(0);
-line(0,topmar-30,width,topmar - 30);
-noStroke();
-
-if(collectionData.length>0) {
-        if(thumbs.length>1) {
-            let img = thumbs[rndToken1];
-            if (img !== undefined) {
-                fill(255,200);
-                rect(30-10,topmar-10,img.width/2+20,img.height/2+20);
-                image(img,30,topmar,img.width/2,img.height/2);
+        stroke(255,100);
+        line(0, margin, width, margin);
+        
+        for(let i=0;i<tokens.length; i++) {
+            let s = width / 10;
+            tokens[i].x = i * s + tokens[i].offset;
+            tokens[i].y = margin + 20;
+            tokens[i].w = s;
+            tokens[i].h = s;
+            tokens[i].showPreview();
+            tokens[i].showData();
+            tokens[i].showTree();
+            if(tokens[i].x < 0 - s) {
+                tokens[i].offset += tokens.length * s;
             }
-            // display one token thumb
-            fill(0);
-            text(`
-Random artwork 
-id: #${collectionData[rndToken1].id}
-Collector/Donor: 
-${collectionData[rndToken1].owner.name}
-`, 30, topmar+img.height/2+20);
-            
-            let img2 = thumbs[rndToken2];
-            if (img2 !== undefined) {
-                fill(255,200);
-                rect(width/3+30-10,topmar-10,img2.width/2+20,img2.height/2+20);
-                image(img2,width/3+30,topmar,img2.width/2,img2.height/2);
-            }
-            // display one token thumb
-            fill(0);
-            text(`
-Random artwork 
-id: #${collectionData[rndToken2].id}
-Collector/Donor: 
-${collectionData[rndToken2].owner.name}
-`, width/3+30, topmar+img.height/2+20);
-            
-            let img3 = thumbs[rndToken3];
-            if (img3 !== undefined) {
-                fill(255,200);
-                rect(width-width/3+30-10,topmar-10,img3.width/2+20,img3.height/2+20);
-                image(img3,width-width/3+30,topmar,img3.width/2,img3.height/2);
-            }
-            // display one token thumb
-            fill(0);
-            text(`
-Random artwork 
-id: #${collectionData[rndToken3].id}
-Collector/Donor: 
-${collectionData[rndToken3].owner.name}
-`, width-width/3+30, topmar+img.height/2+20);
-            }
+            tokens[i].offset-=0.5;
+        }
+    if(mouseY>height-height/3) {
+        fill(255);
+        cursor(HAND);
     } else {
-        fill(0);
-        text(`Random artwork previews will appear here upon minting`, 30, topmar+50);
+        cursor(ARROW);
+        fill(0,200,200);
     }
+    textFont(bfont);
+    textSize(16);
+    textAlign(CENTER);
+    text("mint new edition on fx-hash", width/2,height-height/10);
+    textAlign(LEFT);
+
     }
 }
 
 function mousePressed() {
     thumbs = [];
     updalpha = 255;
-    fetchToken();
+    if(mouseY<height-height/3) {
+        fetchToken();
+    } else {
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        } else {
+            window.open("https://www.fxhash.xyz/generative/24638");
+        }
+    }
 }
 
 function windowResized() {
-    //resizeCanvas(windowWidth, windowHeight);
+    resizeCanvas(windowWidth, windowHeight);
 }
 
 function fetchToken() {
-    // fetch generative token metadata
     fetch('https://api.fxhash.xyz/graphql', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
         },
-        // terrain: 24638
-        // k3rnel: 19820
-        // dotwork: 16060
         body: JSON.stringify({
             query: `{ 
                 generativeToken(id:24638) {
@@ -209,22 +160,68 @@ function initCollection(data) {
     collectionData = data.data.generativeToken.entireCollection;
     for (let i = 0; i < collectionData.length; i++) {
         let img = loadImage("https://ipfs.io/ipfs/" + collectionData[i].thumbnailUri.split("//")[1]);
-        thumbs.push(img);
+        let id = collectionData[i].id;
+        let owner = collectionData[i].owner.name;
+        let angle = collectionData[i].features[0].value;
+        let axiom = collectionData[i].features[1].value;
+        let rule = collectionData[i].features[2].value;
+        let iterations = collectionData[i].features[3].value;
+        let t = new Token(id, owner, img, angle, axiom, rule, iterations);
+        tokens.push(t);
     }
 
-    rndToken1 = floor(random(thumbs.length-1));
-    rndToken2 = floor(random(thumbs.length-1));
-    rndToken3 = floor(random(thumbs.length-1));
-
     tokenBalance = data.data.generativeToken.balance;
-    donatedBalance = (totalAmount - tokenBalance) * price * donationSplit * marketFee;
-    /* 
-        totalAmount = 1000
-        price = 5
-        donationSplit = 0.5
-        marketFee = 0.975
+    donatedBalance = nfs((totalAmount - tokenBalance) * price * donationSplit * marketFee,[],2);
+}
 
-        donated amount (xtz) = ( totalAmount - tokenBalance ) * price * donationSplit * marketFee 
-    */
+function setCharAt(str,index,chr) {
+    if(index > str.length-1) return str;
+    return str.substring(0,index) + chr + str.substring(index+1);
+}
+
+class Token {
+    constructor(id, owner, img, angle, axiom, rule, iterations){
+        this.id = id;
+        this.owner = owner;
+        this.img = img;
+        this.offset = 0;
+        this.x = 0;
+        this.y = 0;
+        this.w = 0;
+        this.h = 0;
+        this.options = {
+            angle: angle,
+            axiom: axiom,
+            rules: {
+                "X": rule
+            },
+            iterations: iterations,
+            length: 30 / iterations*1.5,
+            lineWidth: 1
+        }
+        console.log(this.options);
+        this.lSys = new LSystem( this.options );
+        this.lSys.init(width/10,width/10);
+    }
+    showPreview() {
+        if (this.img !== undefined) {
+            image(this.img, this.x, this.y -this.h*1.2, this.w, this.h);
+        }
+    }
+    showTree(x,y) {
+        this.lSys.display(this.x,this.y);
+        noFill();
+        stroke(255,30);
+        rect(this.x,this.y,this.w,this.h);
+    }
+    showData(x,y) {
+        fill(255);
+        textFont(lfont);
+        textSize(12);
+        text(`${this.options.rules.X}
+#${this.id}
+owned by: 
+${this.owner}`,this.x, this.y + this.h * 1.2);
+    }
 }
 
