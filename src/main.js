@@ -3,8 +3,10 @@ let tokens = [];
 
 let tokenBalance;
 let donatedBalance;
-let totalAmount = 1000;
-let price = 8;
+let totalAmount = 1000; // all editions of terrain
+let firstprice = 8; // listed price over the first week
+let firstmintedbatch = 26; // editions minted for 8 xtz
+let secondprice = 4; // listed price after the first week
 let donationSplit = 0.5;
 let marketFee = 0.975;
 
@@ -171,7 +173,11 @@ function initCollection(data) {
     }
 
     tokenBalance = data.data.generativeToken.balance;
-    donatedBalance = nfs((totalAmount - tokenBalance) * price * donationSplit * marketFee,[],2);
+    donatedBalance = nfs((totalAmount - tokenBalance) * firstprice * donationSplit * marketFee,[],2);
+    // adjust donated balance calculating price changes over price tiers
+    // 1st tier - 8 tzx, 26 editions
+    // 2nd tier - 4 tzx, ... editions
+    // console.log((totalAmount - tokenBalance - firstmintedbatch) * secondprice  + (firstmintedbatch * firstprice) * donationSplit * marketFee);
 }
 
 function setCharAt(str,index,chr) {
@@ -199,7 +205,7 @@ class Token {
             length: 30 / iterations*1.5,
             lineWidth: 1
         }
-        console.log(this.options);
+        //console.log(this.options);
         this.lSys = new LSystem( this.options );
         this.lSys.init(width/10,width/10);
     }
