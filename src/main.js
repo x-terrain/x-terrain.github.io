@@ -182,8 +182,9 @@ function initCollection(data) {
     // donatedBalance = nfs((totalAmount - tokenBalance - firstmintedbatch) * secondprice   + (firstmintedbatch * firstprice) * donationSplit * marketFee, [], 2);
     // after burn 900 editions (2023. 04. 05, as seen on fxhash 1st sales):
 
-    tokenBalance = data.data.generativeToken.balance - 900;
+    tokenBalance = data.data.generativeToken.balance;
     donatedBalance = 288 * donationSplit * marketFee;
+    console.log(tokenBalance);
 }
 
 function setCharAt(str,index,chr) {
