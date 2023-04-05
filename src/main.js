@@ -78,7 +78,7 @@ image(logo, 30, height/3+20, logo.width / 10, logo.height / 10);
         textFont(lfont);
         textSize(16);
         text(`
-Minted tokens: ${totalAmount - tokenBalance} editions
+Minted tokens: ${totalAmount - 900 - tokenBalance} editions
 Remaining tokens: ${tokenBalance} editions
 Donated amount: ${donatedBalance}+ xtz
 ${randseq}
