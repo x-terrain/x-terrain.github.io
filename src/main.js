@@ -80,7 +80,7 @@ image(logo, 30, height/3+20, logo.width / 10, logo.height / 10);
         text(`
 Minted tokens: ${totalAmount - tokenBalance} editions
 Remaining tokens: ${tokenBalance} editions
-Donated amount: ${donatedBalance} xtz
+Donated amount: ${donatedBalance}+ xtz
 ${randseq}
 Click to update data
 `, 30, 60);
@@ -172,13 +172,18 @@ function initCollection(data) {
         tokens.push(t);
     }
 
-    tokenBalance = data.data.generativeToken.balance;
+    
     //donatedBalance = nfs((totalAmount - tokenBalance) * firstprice * donationSplit * marketFee,[],2);
+    
     // adjust donated balance calculating price changes over price tiers
     // 1st tier - 8 tzx, 26 editions
     // 2nd tier - 4 tzx, ... editions
     // console.log((totalAmount - tokenBalance - firstmintedbatch) * secondprice   + (firstmintedbatch * firstprice) * donationSplit * marketFee);
-    donatedBalance = nfs((totalAmount - tokenBalance - firstmintedbatch) * secondprice   + (firstmintedbatch * firstprice) * donationSplit * marketFee, [], 2);
+    // donatedBalance = nfs((totalAmount - tokenBalance - firstmintedbatch) * secondprice   + (firstmintedbatch * firstprice) * donationSplit * marketFee, [], 2);
+    // after burn 900 editions (2023. 04. 05, as seen on fxhash 1st sales):
+
+    tokenBalance = data.data.generativeToken.balance - 900;
+    donatedBalance = 288 * donationSplit * marketFee;
 }
 
 function setCharAt(str,index,chr) {
